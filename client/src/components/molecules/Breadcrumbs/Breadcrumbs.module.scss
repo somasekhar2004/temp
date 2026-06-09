@@ -1,0 +1,31 @@
+// filename: src/components/molecules/Breadcrumbs/Breadcrumbs.module.scss
+@use '../../../styles/abstracts' as a;
+
+.breadcrumbs {
+  display: flex;
+  align-items: center;
+  font-size: 13px;
+  font-weight: 500;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.linkItem {
+  color: a.cvar('text-secondary');
+  text-decoration: none;
+  transition: color 0.2s ease;
+
+  &:hover {
+    color: a.cvar('brand');
+  }
+}
+
+.activeItem {
+  color: a.cvar('text-strong');
+  font-weight: 600;
+}
+
+.separator {
+  color: a.cvar('text-placeholder');
+  display: inline-flex;
+}

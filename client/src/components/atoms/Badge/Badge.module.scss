@@ -1,0 +1,64 @@
+// filename: src/components/atoms/Badge/Badge.module.scss
+@use '../../../styles/abstracts' as a;
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 10px;
+  border-radius: 9999px;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  border: 1px solid transparent;
+  gap: 6px;
+  width: fit-content;
+}
+
+.icon {
+  display: inline-flex;
+  fill: currentColor;
+}
+
+.draft {
+  background-color: a.cvar('highlight-subtle');
+  border-color: a.cvar('highlight-hover');
+  color: a.cvar('highlight-strong');
+}
+
+.scheduled {
+  background-color: a.cvar('brand-subtle');
+  border-color: a.cvar('brand-hover');
+  color: a.cvar('brand-strong');
+}
+
+.live {
+  background-color: a.cvar('accent-subtle');
+  border-color: a.cvar('accent-hover');
+  color: a.cvar('accent-strong');
+  animation: pulse 2.5s infinite ease-in-out;
+}
+
+.completed {
+  background-color: a.cvar('surface-raised');
+  border-color: a.cvar('border');
+  color: a.cvar('text-secondary');
+}
+
+.cancelled {
+  background-color: a.cvar('danger-subtle');
+  border-color: a.cvar('danger-hover');
+  color: a.cvar('danger-strong');
+}
+
+@keyframes pulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(29, 158, 117, 0.4);
+  }
+  70% {
+    box-shadow: 0 0 0 4px rgba(29, 158, 117, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(29, 158, 117, 0);
+  }
+}

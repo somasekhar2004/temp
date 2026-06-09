@@ -1,0 +1,205 @@
+// filename: src/pages/Login/Login.module.scss
+@use '../../styles/abstracts' as a;
+
+.container {
+  display: flex;
+  min-height: 100vh;
+  width: 100%;
+  background-color: a.cvar('page-bg');
+}
+
+// Left Pane: Forms
+.leftPane {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 24px;
+}
+
+.formCard {
+  width: 100%;
+  max-width: 400px;
+}
+
+.logoContainer {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 32px;
+}
+
+.logoIcon {
+  fill: a.cvar('brand');
+}
+
+.brandName {
+  font-size: 22px;
+  font-weight: 800;
+  color: a.cvar('brand-strong');
+}
+
+.tabs {
+  display: flex;
+  background-color: a.cvar('surface-raised');
+  padding: 4px;
+  border-radius: 8px;
+  margin-bottom: 24px;
+  border: 1px solid a.cvar('border-subtle');
+}
+
+.tab {
+  flex: 1;
+  text-align: center;
+  padding: 8px 12px;
+  font-size: 14px;
+  font-weight: 600;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+  text-decoration: none;
+  color: a.cvar('text-secondary');
+  background: none;
+  transition: all 0.2s ease;
+
+  &:hover {
+    color: a.cvar('text-strong');
+  }
+}
+
+.activeTab {
+  background-color: a.cvar('card-bg');
+  color: a.cvar('brand-strong');
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);
+}
+
+.title {
+  font-size: 24px;
+  font-weight: 700;
+  color: a.cvar('text-strong');
+  margin: 0 0 4px 0;
+}
+
+.subtitle {
+  font-size: 14px;
+  color: a.cvar('text-muted');
+  margin: 0 0 24px 0;
+}
+
+.errorBox {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background-color: a.cvar('danger-subtle');
+  border: 1px solid a.cvar('danger-hover');
+  border-radius: 6px;
+  padding: 12px 16px;
+  font-size: 13px;
+  color: a.cvar('danger');
+  font-weight: 500;
+  margin-bottom: 20px;
+}
+
+.errorIcon {
+  fill: currentColor;
+  flex-shrink: 0;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.submitBtn {
+  margin-top: 8px;
+  width: 100%;
+}
+
+.footerText {
+  font-size: 13px;
+  color: a.cvar('text-muted');
+  text-align: center;
+  margin-top: 24px;
+}
+
+.link {
+  color: a.cvar('brand');
+  text-decoration: none;
+  font-weight: 600;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+// Right Pane: Gradients & Features
+.rightPane {
+  flex: 1.1;
+  background: linear-gradient(135deg, a.cvar('brand') 0%, a.cvar('brand-strong') 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 48px;
+  color: #ffffff;
+  
+  @media (max-width: 768px) {
+    display: none; // hide on mobile screens
+  }
+}
+
+.decoContent {
+  max-width: 460px;
+}
+
+.decoLogoWrapper {
+  margin-bottom: 32px;
+}
+
+.decoLogo {
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.decoTitle {
+  font-size: 32px;
+  font-weight: 800;
+  line-height: 1.25;
+  margin: 0 0 16px 0;
+  letter-spacing: -0.5px;
+}
+
+.decoSub {
+  font-size: 16px;
+  color: rgba(255, 255, 255, 0.8);
+  line-height: 1.5;
+  margin: 0 0 40px 0;
+}
+
+.featureList {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.featureItem {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  font-size: 15px;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.95);
+  background-color: rgba(255, 255, 255, 0.08);
+  padding: 12px 18px;
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  transition: all 0.2s ease;
+
+  &:hover {
+    background-color: rgba(255, 255, 255, 0.12);
+    transform: translateX(4px);
+  }
+}
+
+.featIcon {
+  color: #ffffff;
+}

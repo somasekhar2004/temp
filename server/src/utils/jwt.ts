@@ -9,7 +9,10 @@ interface SignArgs {
 }
 
 export function signToken({ userId, role }: SignArgs): string {
-  const options: SignOptions = { expiresIn: env.JWT_EXPIRES_IN as SignOptions['expiresIn'] };
+  const options: SignOptions = {};
+  if (env.JWT_EXPIRES_IN) {
+    options.expiresIn = env.JWT_EXPIRES_IN as Exclude<SignOptions['expiresIn'], undefined>;
+  }
   return jwt.sign({ sub: userId, role }, env.JWT_SECRET, options);
 }
 

@@ -1,0 +1,143 @@
+// filename: src/components/organisms/Sidebar/Sidebar.module.scss
+@use '../../../styles/abstracts' as a;
+
+.sidebar {
+  width: 240px;
+  height: 100vh;
+  background-color: a.cvar('card-bg');
+  border-right: 1px solid a.cvar('border-subtle');
+  display: flex;
+  flex-direction: column;
+  padding: 24px 16px;
+  box-sizing: border-box;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 32px;
+  padding: 0 8px;
+}
+
+.logo {
+  fill: a.cvar('brand');
+}
+
+.brandText {
+  font-size: 20px;
+  font-weight: 800;
+  color: a.cvar('brand-strong');
+  letter-spacing: -0.5px;
+}
+
+.nav {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  flex: 1;
+}
+
+.navLink {
+  display: flex;
+  align-items: center;
+  padding: 10px 14px;
+  border-radius: 6px;
+  color: a.cvar('text-secondary');
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 600;
+  gap: 12px;
+  transition: all 0.2s ease;
+
+  &:hover {
+    color: a.cvar('brand');
+    background-color: a.cvar('brand-subtle');
+  }
+}
+
+.active {
+  color: a.cvar('brand-strong');
+  background-color: a.cvar('brand-subtle');
+
+  .linkIcon {
+    color: a.cvar('brand');
+  }
+}
+
+.linkIcon {
+  color: a.cvar('text-placeholder');
+  fill: currentColor;
+  transition: color 0.2s ease;
+}
+
+.footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 8px;
+  border-top: 1px solid a.cvar('border-subtle');
+  gap: 12px;
+}
+
+.userInfo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0; // enables text truncation
+}
+
+.avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background-color: a.cvar('surface-raised');
+  color: a.cvar('text-secondary');
+  font-weight: 700;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.details {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.name {
+  font-size: 13px;
+  font-weight: 700;
+  color: a.cvar('text-strong');
+  margin: 0 0 2px 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.role {
+  font-size: 11px;
+  font-weight: 600;
+  color: a.cvar('text-muted');
+  margin: 0;
+}
+
+.logoutBtn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: a.cvar('text-placeholder');
+  padding: 8px;
+  border-radius: 4px;
+  transition: all 0.2s ease;
+
+  &:hover {
+    color: a.cvar('danger');
+    background-color: a.cvar('danger-subtle');
+  }
+}

@@ -19,7 +19,9 @@ export class ApiError extends Error {
     super(message);
     this.status = status;
     this.code = code;
-    this.details = details;
+    if (details !== undefined) {
+      this.details = details;
+    }
   }
 
   toJSON(): ApiErrorBody {

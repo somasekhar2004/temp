@@ -1,0 +1,53 @@
+// filename: src/components/molecules/CountdownClock/CountdownClock.module.scss
+@use '../../../styles/abstracts' as a;
+
+.clock {
+  display: inline-flex;
+  align-items: center;
+  font-size: 13px;
+  font-weight: 600;
+  color: a.cvar('brand-strong');
+  gap: 6px;
+}
+
+.icon {
+  fill: currentColor;
+}
+
+.completed {
+  color: a.cvar('text-muted');
+}
+
+// Exam screen top-right stopwatch layout
+.testMode {
+  display: flex;
+  align-items: center;
+  padding: 8px 16px;
+  background-color: a.cvar('danger-subtle');
+  border: 1px solid a.cvar('danger-hover');
+  border-radius: 6px;
+  color: a.cvar('danger');
+  gap: 8px;
+}
+
+.timeStr {
+  font-size: 16px;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+.pulseIcon {
+  fill: currentColor;
+  animation: pulse 1s infinite alternate ease-in-out;
+}
+
+@keyframes pulse {
+  from {
+    transform: scale(1);
+    opacity: 0.8;
+  }
+  to {
+    transform: scale(1.15);
+    opacity: 1;
+  }
+}

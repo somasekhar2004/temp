@@ -1,0 +1,651 @@
+// filename: src/pages/EditQuizDetails/EditQuizDetails.module.scss
+@use '../../styles/abstracts' as a;
+
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.topBar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.topActions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+// Banners
+.bannerContainer {
+  width: 100%;
+}
+
+.banner {
+  display: flex;
+  align-items: flex-start;
+  padding: 16px 20px;
+  border-radius: 8px;
+  border: 1px solid transparent;
+  gap: 16px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.02);
+}
+
+.bannerContent {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.bannerTitle {
+  font-size: 14px;
+  font-weight: 700;
+  margin: 0;
+}
+
+.bannerText {
+  font-size: 13px;
+  margin: 0;
+  opacity: 0.85;
+}
+
+.bannerAlert {
+  background-color: a.cvar('danger-subtle');
+  border-color: a.cvar('danger-hover');
+  color: a.cvar('danger-strong');
+}
+
+.bannerReady {
+  background-color: a.cvar('accent-subtle');
+  border-color: a.cvar('accent-hover');
+  color: a.cvar('accent-strong');
+}
+
+.bannerInfo {
+  background-color: a.cvar('brand-subtle');
+  border-color: a.cvar('brand-hover');
+  color: a.cvar('brand-strong');
+}
+
+// Summary Card
+.summaryCard {
+  background-color: a.cvar('card-bg');
+  border: 1px solid a.cvar('border-subtle');
+  border-radius: 8px;
+  padding: 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 24px;
+  flex-wrap: wrap;
+}
+
+.summaryInfo {
+  flex: 1;
+  min-width: 280px;
+}
+
+.quizTitle {
+  font-size: 20px;
+  font-weight: 800;
+  color: a.cvar('text-strong');
+  margin: 0 0 6px 0;
+}
+
+.quizDesc {
+  font-size: 14px;
+  color: a.cvar('text-secondary');
+  margin: 0;
+  line-height: 1.5;
+}
+
+.metadataStats {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  flex-shrink: 0;
+}
+
+.metaRow {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  color: a.cvar('text-secondary');
+}
+
+// Inline Schedule Form
+.scheduleForm {
+  background-color: a.cvar('surface-raised');
+  border: 1px solid a.cvar('border');
+  border-radius: 8px;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.formTitle {
+  font-size: 14px;
+  font-weight: 700;
+  color: a.cvar('text-strong');
+  margin: 0;
+}
+
+.scheduleFields {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+
+  :global(.wrapper) {
+    flex: 1;
+    min-width: 200px;
+    margin-bottom: 0;
+  }
+}
+
+.formActions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+}
+
+// Tabs
+.tabHeader {
+  display: flex;
+  border-bottom: 1px solid a.cvar('border-subtle');
+  gap: 24px;
+  margin-top: 12px;
+}
+
+.tabBtn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 12px 4px;
+  font-family: inherit;
+  font-size: 15px;
+  font-weight: 600;
+  color: a.cvar('text-secondary');
+  border-bottom: 2px solid transparent;
+  transition: all 0.2s ease;
+  outline: none;
+
+  &:hover {
+    color: a.cvar('text-strong');
+  }
+}
+
+.activeTab {
+  color: a.cvar('brand-strong');
+  border-bottom-color: a.cvar('brand');
+}
+
+.tabContent {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  width: 100%;
+}
+
+.toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 12px;
+}
+
+// Empty Tab States
+.tabEmptyState {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 64px 24px;
+  text-align: center;
+  background-color: a.cvar('card-bg');
+  border: 1px dashed a.cvar('border');
+  border-radius: 8px;
+
+  h4 {
+    font-size: 16px;
+    font-weight: 700;
+    color: a.cvar('text-strong');
+    margin: 16px 0 6px 0;
+  }
+
+  p {
+    font-size: 14px;
+    color: a.cvar('text-muted');
+    margin: 0;
+  }
+}
+
+.tabEmptyIcon {
+  color: a.cvar('text-placeholder');
+}
+
+// Questions Listing
+.questionsList {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.questionCard {
+  background-color: a.cvar('card-bg');
+  border: 1px solid a.cvar('border-subtle');
+  border-radius: 8px;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.cardHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.qNum {
+  font-size: 12px;
+  font-weight: 700;
+  color: a.cvar('brand-strong');
+  background-color: a.cvar('brand-subtle');
+  padding: 3px 8px;
+  border-radius: 4px;
+  text-transform: uppercase;
+}
+
+.cardActions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.editBtn, .deleteBtn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 6px;
+  border-radius: 4px;
+  transition: all 0.2s ease;
+}
+
+.editBtn {
+  color: a.cvar('text-secondary');
+  &:hover {
+    color: a.cvar('brand');
+    background-color: a.cvar('brand-subtle');
+  }
+}
+
+.deleteBtn {
+  color: a.cvar('danger');
+  &:hover {
+    color: a.cvar('danger-strong');
+    background-color: a.cvar('danger-subtle');
+  }
+}
+
+.qText {
+  font-size: 15px;
+  font-weight: 600;
+  color: a.cvar('text-strong');
+  margin: 0;
+}
+
+.optionsGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+
+  @media (max-width: 576px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.optionItem {
+  display: flex;
+  align-items: center;
+  padding: 10px 14px;
+  border-radius: 6px;
+  background-color: a.cvar('surface-raised');
+  border: 1px solid a.cvar('border-subtle');
+  font-size: 13px;
+  color: a.cvar('text-body');
+  gap: 10px;
+}
+
+.correctOption {
+  background-color: a.cvar('accent-subtle');
+  border-color: a.cvar('accent-hover');
+  color: a.cvar('accent-strong');
+  font-weight: 600;
+}
+
+.optLetter {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background-color: rgba(0, 0, 0, 0.05);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 11px;
+}
+
+.correctOption .optLetter {
+  background-color: rgba(29, 158, 117, 0.15);
+}
+
+.optText {
+  flex: 1;
+}
+
+.checkIcon {
+  color: a.cvar('accent');
+  flex-shrink: 0;
+}
+
+// Inline Participant Form
+.inlineForm {
+  background-color: a.cvar('surface-raised');
+  border: 1px solid a.cvar('border');
+  border-radius: 6px;
+  padding: 16px;
+  display: flex;
+  align-items: flex-end;
+  gap: 16px;
+  flex-wrap: wrap;
+
+  :global(.wrapper) {
+    flex: 1;
+    min-width: 240px;
+    margin-bottom: 0;
+  }
+}
+
+.inlineFormActions {
+  display: flex;
+  gap: 8px;
+}
+
+// Roster Table List
+.rosterWrapper {
+  background-color: a.cvar('card-bg');
+  border: 1px solid a.cvar('border-subtle');
+  border-radius: 8px;
+  overflow: hidden;
+  width: 100%;
+}
+
+.rosterTable {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+
+  th {
+    background-color: a.cvar('surface-raised');
+    color: a.cvar('text-muted');
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    padding: 14px 20px;
+    border-bottom: 1px solid a.cvar('border');
+  }
+
+  td {
+    padding: 12px 20px;
+    border-bottom: 1px solid a.cvar('border-subtle');
+    color: a.cvar('text-body');
+    font-size: 14px;
+    vertical-align: middle;
+  }
+
+  tr:last-child td {
+    border-bottom: none;
+  }
+}
+
+.rosterUserCell {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.avatar {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background-color: a.cvar('brand-subtle');
+  color: a.cvar('brand');
+  font-weight: 700;
+  font-size: 11px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.rosterName {
+  font-weight: 600;
+  color: a.cvar('text-strong');
+}
+
+.rosterEmail {
+  color: a.cvar('text-secondary');
+}
+
+.rosterDate {
+  font-variant-numeric: tabular-nums;
+  color: a.cvar('text-secondary');
+}
+
+.removeBtn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 6px 10px;
+  border-radius: 4px;
+  color: a.cvar('danger');
+  transition: all 0.2s ease;
+
+  &:hover {
+    color: a.cvar('danger-strong');
+    background-color: a.cvar('danger-subtle');
+  }
+}
+
+// Modal Form Styles
+.modalForm {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.qTypeWrapper, .correctSelection {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.fieldLabel {
+  font-size: 13px;
+  font-weight: 600;
+  color: a.cvar('text-strong');
+}
+
+.selectType {
+  padding: 10px 14px;
+  border-radius: 6px;
+  border: 1px solid a.cvar('border');
+  background-color: a.cvar('card-bg');
+  color: a.cvar('text-strong');
+  font-family: inherit;
+  font-size: 14px;
+  outline: none;
+  cursor: pointer;
+  transition: border-color 0.2s ease;
+
+  &:focus {
+    border-color: a.cvar('brand');
+  }
+}
+
+.optionsFields {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+
+  :global(.wrapper) {
+    margin-bottom: 0;
+  }
+}
+
+.checkboxesGroup {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.checkboxLabel {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  font-weight: 600;
+  color: a.cvar('text-body');
+  cursor: pointer;
+
+  input {
+    width: 16px;
+    height: 16px;
+    cursor: pointer;
+  }
+}
+
+.csvInstructions {
+  font-size: 12px;
+  color: a.cvar('text-secondary');
+  background-color: a.cvar('surface-raised');
+  padding: 12px;
+  border-radius: 6px;
+  border-left: 3px solid a.cvar('brand');
+  line-height: 1.6;
+
+  code {
+    font-family: monospace;
+    font-size: 11px;
+    background-color: rgba(0, 0, 0, 0.05);
+    padding: 2px 4px;
+    border-radius: 2px;
+  }
+}
+
+.errorMessage {
+  font-size: 12px;
+  color: a.cvar('danger');
+  font-weight: 500;
+}
+
+.modalActions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 8px;
+}
+
+// Cancel Modal Styles
+.cancelModalBody {
+  display: flex;
+  flex-direction: column;
+}
+
+.modalAlert {
+  display: flex;
+  padding: 14px 16px;
+  background-color: a.cvar('danger-subtle');
+  border: 1px solid a.cvar('danger-hover');
+  border-radius: 6px;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.warningIcon {
+  color: a.cvar('danger');
+  flex-shrink: 0;
+}
+
+.alertContent {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.alertTitle {
+  font-size: 14px;
+  font-weight: 700;
+  color: a.cvar('danger-strong');
+  margin: 0;
+}
+
+.alertText {
+  font-size: 12px;
+  color: a.cvar('danger-strong');
+  margin: 0;
+  opacity: 0.85;
+}
+
+.modalInfoList {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.infoRow {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  font-size: 13px;
+  color: a.cvar('text-body');
+}
+
+.dangerIcon {
+  color: a.cvar('danger');
+  margin-top: 2px;
+  flex-shrink: 0;
+}
+
+.modalDivider {
+  border: 0;
+  border-top: 1px solid a.cvar('border-subtle');
+  margin: 16px 0;
+}
+
+.loading {
+  font-size: 14px;
+  color: a.cvar('text-secondary');
+  text-align: center;
+  padding: 64px 0;
+}

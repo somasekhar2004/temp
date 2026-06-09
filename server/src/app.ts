@@ -7,6 +7,10 @@ import swaggerUi from 'swagger-ui-express';
 import { swaggerSpec } from './config/swagger';
 import { env } from './config/env';
 import authRoutes from './modules/auth/auth.routes';
+import adminRoutes from './modules/admin/admin.routes';
+import instructorRoutes from './modules/instructor/instructor.routes';
+import candidateRoutes from './modules/candidate/candidate.routes';
+import { Quiz } from './models/Quiz';
 import { errorHandler } from './middleware/errorHandler';
 
 export const createApp = (): Application => {
@@ -53,11 +57,35 @@ export const createApp = (): Application => {
   // Convenience: redirect root → docs
   app.get('/', (_req, res) => res.redirect('/api-docs'));
 
+  // Middleware to auto-transition quiz states based on current server time
+  app.use(async (_req, _res, next) => {
+    try {
+      const now = new Date();
+      // 1. Transition Scheduled -> Live when startTime is reached
+      await Quiz.updateMany(
+        { status: 'Scheduled', startTime: { $lte: now } },
+        { $set: { status: 'Live' } }
+      );
+      // 2. Transition Live -> Completed when endTime is reached
+      await Quiz.updateMany(
+        { status: 'Live', endTime: { $lt: now } },
+        { $set: { status: 'Completed' } }
+      );
+      next();
+    } catch (err) {
+      next(err);
+    }
+  });
+
   // API routes
   app.use('/api/auth', authRoutes);
+  app.use('/api/admin', adminRoutes);
+  app.use('/api/instructor', instructorRoutes);
+  app.use('/api/candidate', candidateRoutes);
 
   // Global error handler — must be LAST
   app.use(errorHandler);
+
 
   return app;
 };

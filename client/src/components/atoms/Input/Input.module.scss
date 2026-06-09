@@ -1,0 +1,120 @@
+// filename: src/components/atoms/Input/Input.module.scss
+@use '../../../styles/abstracts' as a;
+
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 16px;
+  width: 100%;
+}
+
+.label {
+  font-size: 13px;
+  font-weight: 600;
+  margin-bottom: 6px;
+  color: a.cvar('text-strong');
+}
+
+.inputContainer {
+  position: relative;
+  display: flex;
+  width: 100%;
+  align-items: center;
+}
+
+.input {
+  width: 100%;
+  padding: 10px 14px;
+  border-radius: 6px;
+  border: 1px solid a.cvar('border');
+  background-color: a.cvar('card-bg');
+  color: a.cvar('text-strong');
+  font-family: inherit;
+  font-size: 14px;
+  transition: all 0.2s ease;
+  outline: none;
+
+  &::placeholder {
+    color: a.cvar('text-placeholder');
+  }
+
+  &:focus {
+    border-color: a.cvar('brand');
+    box-shadow: 0 0 0 2px rgba(83, 74, 183, 0.15);
+  }
+
+  &:disabled {
+    background-color: a.cvar('surface-raised');
+    color: a.cvar('text-muted');
+    cursor: not-allowed;
+  }
+}
+
+.textarea {
+  resize: vertical;
+}
+
+.errorBorder {
+  border-color: a.cvar('danger');
+
+  &:focus {
+    border-color: a.cvar('danger');
+    box-shadow: 0 0 0 2px rgba(226, 75, 74, 0.15);
+  }
+}
+
+.errorMessage {
+  margin-top: 5px;
+  font-size: 12px;
+  color: a.cvar('danger');
+  font-weight: 500;
+}
+
+// Password toggle button
+.passwordToggle {
+  position: absolute;
+  right: 12px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: a.cvar('text-secondary');
+  padding: 4px;
+  border-radius: 4px;
+  outline: none;
+
+  &:hover {
+    color: a.cvar('text-strong');
+    background-color: a.cvar('surface-raised');
+  }
+}
+
+// Checkbox and Radio Wrappers
+.checkboxWrapper, .radioWrapper {
+  flex-direction: row;
+  align-items: center;
+  margin-bottom: 12px;
+  cursor: pointer;
+
+  .inputContainer {
+    width: auto;
+  }
+}
+
+.checkbox, .radio {
+  width: 18px;
+  height: 18px;
+  margin: 0;
+  cursor: pointer;
+  accent-color: a.cvar('brand');
+}
+
+.choiceLabel {
+  margin-left: 8px;
+  font-size: 14px;
+  color: a.cvar('text-body');
+  user-select: none;
+  cursor: pointer;
+}

@@ -1,0 +1,559 @@
+// filename: client/src/pages/QuizAttemptScreen/QuizAttemptScreen.module.scss
+@use '../../styles/abstracts' as a;
+
+// Pre-test instructions & State screen layouts
+.preTestWrapper, .errorContainer, .successContainer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: calc(100vh - 120px);
+  padding: 24px;
+}
+
+.preTestCard, .errorCard, .successCard {
+  background-color: a.cvar('card-bg');
+  border: 1px solid a.cvar('border-subtle');
+  border-radius: 12px;
+  padding: 40px;
+  max-width: 600px;
+  width: 100%;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.05);
+  display: flex;
+  flex-direction: column;
+}
+
+.badgeRow {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.quizBadge {
+  background-color: rgba(29, 158, 117, 0.1);
+  color: #1D9E75;
+  font-size: 12px;
+  font-weight: 700;
+  padding: 4px 10px;
+  border-radius: 6px;
+}
+
+.durationBadge {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background-color: a.cvar('bg-subtle');
+  color: a.cvar('text-secondary');
+  font-size: 12px;
+  font-weight: 600;
+  padding: 4px 10px;
+  border-radius: 6px;
+}
+
+.quizTitle {
+  font-size: 28px;
+  font-weight: 800;
+  color: a.cvar('text-strong');
+  margin: 0 0 12px 0;
+  line-height: 1.3;
+}
+
+.quizDescription {
+  font-size: 15px;
+  color: a.cvar('text-muted');
+  margin: 0;
+  line-height: 1.6;
+}
+
+.divider {
+  border: 0;
+  height: 1px;
+  background-color: a.cvar('border-subtle');
+  margin: 24px 0;
+}
+
+.guidelinesTitle {
+  font-size: 16px;
+  font-weight: 700;
+  color: a.cvar('text-strong');
+  margin: 0 0 16px 0;
+}
+
+.guidelinesList {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+
+  li {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    font-size: 14px;
+    color: a.cvar('text-body');
+    line-height: 1.5;
+  }
+}
+
+.guideIcon {
+  color: a.cvar('brand');
+  margin-top: 2px;
+  flex-shrink: 0;
+}
+
+.startActions, .successActions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 12px;
+}
+
+// Error & Success Card specific styling
+.errorIcon {
+  color: a.cvar('danger');
+  margin-bottom: 20px;
+  align-self: center;
+}
+
+.errorTitle {
+  font-size: 20px;
+  font-weight: 700;
+  color: a.cvar('text-strong');
+  margin: 0 0 8px 0;
+  text-align: center;
+}
+
+.errorText {
+  font-size: 14px;
+  color: a.cvar('text-muted');
+  margin: 0 0 24px 0;
+  text-align: center;
+  line-height: 1.5;
+}
+
+.successIconWrapper {
+  width: 80px;
+  height: 80px;
+  background-color: rgba(29, 158, 117, 0.1);
+  color: #1D9E75;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  align-self: center;
+  margin-bottom: 24px;
+}
+
+.successIcon {
+  color: #1D9E75;
+}
+
+.successTitle {
+  font-size: 22px;
+  font-weight: 700;
+  color: a.cvar('text-strong');
+  margin: 0 0 12px 0;
+  text-align: center;
+}
+
+.successText {
+  font-size: 14px;
+  color: a.cvar('text-muted');
+  margin: 0 0 32px 0;
+  text-align: center;
+  line-height: 1.5;
+}
+
+// TAKING TEST INTERFACE layout
+.takingTestWrapper {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background-color: a.cvar('page-bg');
+}
+
+.testHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 32px;
+  background-color: a.cvar('card-bg');
+  border-bottom: 1px solid a.cvar('border-subtle');
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  height: 70px;
+  box-sizing: border-box;
+}
+
+.testBrand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.brandIcon {
+  color: a.cvar('brand');
+}
+
+.testTitle {
+  font-size: 16px;
+  font-weight: 700;
+  color: a.cvar('text-strong');
+  margin: 0;
+}
+
+.questionCounter {
+  font-size: 12px;
+  color: a.cvar('text-muted');
+  margin: 2px 0 0 0;
+}
+
+.timerWrapper {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.timerLabel {
+  font-size: 13px;
+  font-weight: 600;
+  color: a.cvar('text-secondary');
+}
+
+.takingTestBody {
+  display: grid;
+  grid-template-columns: 1fr 300px;
+  height: calc(100vh - 70px);
+  
+  @media (max-width: 900px) {
+    grid-template-columns: 1fr;
+    height: auto;
+  }
+}
+
+// Question Panel (Left Column)
+.questionPanel {
+  display: flex;
+  flex-direction: column;
+  padding: 40px;
+  overflow-y: auto;
+  box-sizing: border-box;
+  gap: 32px;
+
+  @media (max-width: 600px) {
+    padding: 20px;
+  }
+}
+
+.questionCard {
+  background-color: a.cvar('card-bg');
+  border: 1px solid a.cvar('border-subtle');
+  border-radius: 12px;
+  padding: 32px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.02);
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.questionHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.qIndexBadge {
+  font-size: 12px;
+  font-weight: 700;
+  color: a.cvar('brand');
+  background-color: rgba(83, 74, 183, 0.1);
+  padding: 4px 8px;
+  border-radius: 4px;
+}
+
+.qTypeBadge {
+  font-size: 12px;
+  color: a.cvar('text-muted');
+  font-weight: 500;
+}
+
+.questionText {
+  font-size: 20px;
+  font-weight: 700;
+  color: a.cvar('text-strong');
+  margin: 0;
+  line-height: 1.5;
+}
+
+.optionsList {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.optionItem {
+  display: flex;
+  align-items: center;
+  border: 1px solid a.cvar('border');
+  border-radius: 8px;
+  padding: 16px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  gap: 12px;
+  background-color: a.cvar('card-bg');
+
+  &:hover {
+    border-color: a.cvar('brand-hover');
+    background-color: a.cvar('bg-subtle');
+  }
+}
+
+.selectedOption {
+  border-color: a.cvar('brand');
+  background-color: rgba(83, 74, 183, 0.05);
+
+  &:hover {
+    background-color: rgba(83, 74, 183, 0.08);
+  }
+}
+
+.optionIndicator {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.selectedIcon {
+  color: a.cvar('brand');
+}
+
+.unselectedIcon {
+  color: a.cvar('text-placeholder');
+}
+
+.optionLetter {
+  font-size: 14px;
+  font-weight: 700;
+  color: a.cvar('text-secondary');
+}
+
+.optionText {
+  font-size: 14px;
+  color: a.cvar('text-body');
+  line-height: 1.4;
+}
+
+.navButtons {
+  display: flex;
+  justify-content: space-between;
+  margin-top: auto;
+}
+
+// Navigator Panel (Right Column)
+.navigatorPanel {
+  background-color: a.cvar('card-bg');
+  border-left: 1px solid a.cvar('border-subtle');
+  padding: 32px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  overflow-y: auto;
+  box-sizing: border-box;
+
+  @media (max-width: 900px) {
+    border-left: none;
+    border-top: 1px solid a.cvar('border-subtle');
+    padding: 24px;
+  }
+}
+
+.panelTitle {
+  font-size: 16px;
+  font-weight: 700;
+  color: a.cvar('text-strong');
+  margin: 0;
+}
+
+.navGrid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 8px;
+}
+
+.navNum {
+  height: 40px;
+  border-radius: 6px;
+  border: 1px solid a.cvar('border');
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: a.cvar('card-bg');
+  color: a.cvar('text-secondary');
+}
+
+.activeNum {
+  border-color: a.cvar('brand') !important;
+  box-shadow: 0 0 0 2px rgba(83, 74, 183, 0.25);
+}
+
+.answeredNum {
+  background-color: rgba(29, 158, 117, 0.1);
+  color: #1D9E75;
+  border-color: rgba(29, 158, 117, 0.3);
+}
+
+.visitedNum {
+  background-color: rgba(226, 75, 74, 0.08);
+  color: #E24B4A;
+  border-color: rgba(226, 75, 74, 0.25);
+}
+
+.unvisitedNum {
+  background-color: a.cvar('bg-subtle');
+  color: a.cvar('text-muted');
+  border-color: a.cvar('border-subtle');
+}
+
+.navDivider {
+  border: 0;
+  height: 1px;
+  background-color: a.cvar('border-subtle');
+  margin: 0;
+}
+
+.legendList {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.legendTitle {
+  font-size: 13px;
+  font-weight: 700;
+  color: a.cvar('text-secondary');
+  margin: 0;
+}
+
+.legendItem {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  color: a.cvar('text-body');
+}
+
+.legendDot {
+  width: 12px;
+  height: 12px;
+  border-radius: 3px;
+  border: 1px solid;
+}
+
+.legendAnswered {
+  background-color: rgba(29, 158, 117, 0.1);
+  border-color: rgba(29, 158, 117, 0.3);
+}
+
+.legendVisited {
+  background-color: rgba(226, 75, 74, 0.08);
+  border-color: rgba(226, 75, 74, 0.25);
+}
+
+.legendUnvisited {
+  background-color: a.cvar('bg-subtle');
+  border-color: a.cvar('border-subtle');
+}
+
+// Modal body elements
+.submitModalBody {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.modalWarningBox {
+  display: flex;
+  gap: 12px;
+  background-color: rgba(186, 117, 23, 0.08);
+  border: 1px solid rgba(186, 117, 23, 0.2);
+  padding: 16px;
+  border-radius: 8px;
+}
+
+.warningIcon {
+  color: #BA7517;
+  flex-shrink: 0;
+}
+
+.warningBoxTitle {
+  font-size: 14px;
+  font-weight: 700;
+  color: #BA7517;
+  margin: 0 0 4px 0;
+}
+
+.warningBoxText {
+  font-size: 12px;
+  color: a.cvar('text-secondary');
+  margin: 0;
+  line-height: 1.4;
+}
+
+.unansweredAlert {
+  font-size: 14px;
+  color: a.cvar('text-body');
+  line-height: 1.5;
+  margin: 0;
+}
+
+.dangerText {
+  color: #E24B4A;
+  font-weight: 700;
+}
+
+.completedAlert {
+  font-size: 14px;
+  color: #1D9E75;
+  font-weight: 600;
+  margin: 0;
+}
+
+.modalActions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 8px;
+}
+
+.loadingBox {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 0;
+  gap: 16px;
+  color: a.cvar('text-secondary');
+}
+
+.spinner {
+  width: 32px;
+  height: 32px;
+  border: 3px solid rgba(0, 0, 0, 0.1);
+  border-radius: 50%;
+  border-top-color: a.cvar('brand');
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}

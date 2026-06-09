@@ -26,4 +26,5 @@ export const env = {
   COOKIE_SECRET: process.env.COOKIE_SECRET || 'change_me_too',
   CLIENT_URL: process.env.CLIENT_URL || 'http://localhost:3000',
   BCRYPT_COST: optionalNumber('BCRYPT_COST', 10),
+  COOKIE_DOMAIN: process.env.COOKIE_DOMAIN || undefined,
 } as const;

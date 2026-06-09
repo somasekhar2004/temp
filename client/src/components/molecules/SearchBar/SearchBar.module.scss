@@ -1,0 +1,59 @@
+// filename: src/components/molecules/SearchBar/SearchBar.module.scss
+@use '../../../styles/abstracts' as a;
+
+.searchBar {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 100%;
+  max-width: 300px;
+}
+
+.searchIcon {
+  position: absolute;
+  left: 12px;
+  color: a.cvar('text-placeholder');
+  pointer-events: none;
+}
+
+.input {
+  width: 100%;
+  padding: 8px 36px;
+  font-family: inherit;
+  font-size: 13px;
+  border-radius: 6px;
+  border: 1px solid a.cvar('border');
+  background-color: a.cvar('card-bg');
+  color: a.cvar('text-strong');
+  outline: none;
+  transition: all 0.2s ease;
+
+  &::placeholder {
+    color: a.cvar('text-placeholder');
+  }
+
+  &:focus {
+    border-color: a.cvar('brand');
+    box-shadow: 0 0 0 2px rgba(83, 74, 183, 0.1);
+  }
+}
+
+.clearButton {
+  position: absolute;
+  right: 10px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: a.cvar('text-placeholder');
+  padding: 3px;
+  border-radius: 50%;
+  transition: all 0.2s ease;
+
+  &:hover {
+    color: a.cvar('text-strong');
+    background-color: a.cvar('surface-raised');
+  }
+}

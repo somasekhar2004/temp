@@ -1,0 +1,95 @@
+// filename: src/components/molecules/StatCard/StatCard.module.scss
+@use '../../../styles/abstracts' as a;
+
+.statCard {
+  display: flex;
+  align-items: center;
+  padding: 20px;
+  border-radius: 8px;
+  background-color: a.cvar('card-bg');
+  border: 1px solid a.cvar('border-subtle');
+  gap: 16px;
+  flex: 1;
+  min-width: 200px;
+  transition: all 0.2s ease-in-out;
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
+  }
+}
+
+.iconContainer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12px;
+  border-radius: 8px;
+  transition: background-color 0.2s ease;
+}
+
+.icon {
+  fill: currentColor;
+}
+
+.info {
+  display: flex;
+  flex-direction: column;
+}
+
+.value {
+  font-size: 24px;
+  font-weight: 700;
+  line-height: 1;
+  margin-bottom: 4px;
+  color: a.cvar('text-strong');
+}
+
+.title {
+  font-size: 13px;
+  font-weight: 600;
+  color: a.cvar('text-muted');
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+// Variants
+.primary {
+  border-left: 4px solid a.cvar('brand');
+  .iconContainer {
+    background-color: a.cvar('brand-subtle');
+    color: a.cvar('brand');
+  }
+}
+
+.secondary {
+  border-left: 4px solid a.cvar('accent');
+  .iconContainer {
+    background-color: a.cvar('accent-subtle');
+    color: a.cvar('accent');
+  }
+}
+
+.highlight {
+  border-left: 4px solid a.cvar('highlight');
+  .iconContainer {
+    background-color: a.cvar('highlight-subtle');
+    color: a.cvar('highlight');
+  }
+}
+
+.danger {
+  border-left: 4px solid a.cvar('danger');
+  .iconContainer {
+    background-color: a.cvar('danger-subtle');
+    color: a.cvar('danger');
+  }
+}
+
+.neutral {
+  border-left: 4px solid a.cvar('border');
+  .iconContainer {
+    background-color: a.cvar('surface-raised');
+    color: a.cvar('text-secondary');
+  }
+}

@@ -1,0 +1,190 @@
+// filename: src/components/organisms/QuizTable/QuizTable.module.scss
+@use '../../../styles/abstracts' as a;
+
+.tableWrapper {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  background-color: a.cvar('card-bg');
+  border: 1px solid a.cvar('border-subtle');
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+
+  th {
+    background-color: a.cvar('surface-raised');
+    color: a.cvar('text-muted');
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    padding: 14px 20px;
+    border-bottom: 1px solid a.cvar('border');
+  }
+
+  td {
+    padding: 16px 20px;
+    border-bottom: 1px solid a.cvar('border-subtle');
+    color: a.cvar('text-body');
+    font-size: 14px;
+    vertical-align: middle;
+  }
+
+  tr:last-child td {
+    border-bottom: none;
+  }
+}
+
+.titleCell {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  max-width: 320px;
+}
+
+.title {
+  font-weight: 700;
+  color: a.cvar('text-strong');
+  margin: 0;
+}
+
+.description {
+  font-size: 12px;
+  color: a.cvar('text-muted');
+  margin: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.dateText {
+  font-variant-numeric: tabular-nums;
+  font-weight: 500;
+}
+
+.durationText {
+  font-weight: 500;
+}
+
+.actionHeader {
+  text-align: right;
+}
+
+.actionsContainer {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 8px;
+}
+
+.noAction {
+  color: a.cvar('text-placeholder');
+  font-weight: bold;
+}
+
+// Pagination controls
+.pagination {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 20px;
+  border-top: 1px solid a.cvar('border-subtle');
+  background-color: a.cvar('card-bg');
+}
+
+.pageBtn {
+  display: inline-flex;
+  align-items: center;
+  background-color: a.cvar('card-bg');
+  border: 1px solid a.cvar('border');
+  border-radius: 6px;
+  color: a.cvar('text-secondary');
+  padding: 8px 14px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  gap: 6px;
+  transition: all 0.2s ease;
+
+  &:hover:not(:disabled) {
+    border-color: a.cvar('brand');
+    color: a.cvar('brand-strong');
+    background-color: a.cvar('brand-subtle');
+  }
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+}
+
+.pagesList {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.pageNum {
+  width: 34px;
+  height: 34px;
+  border-radius: 6px;
+  border: 1px solid transparent;
+  background: none;
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 600;
+  color: a.cvar('text-secondary');
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+
+  &:hover {
+    background-color: a.cvar('surface-raised');
+    color: a.cvar('text-strong');
+  }
+}
+
+.activePage {
+  background-color: a.cvar('brand') !important;
+  color: #ffffff !important;
+}
+
+// Empty state block
+.emptyState {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 48px 24px;
+  background-color: a.cvar('card-bg');
+  border: 1px solid a.cvar('border-subtle');
+  border-radius: 8px;
+  text-align: center;
+  width: 100%;
+}
+
+.emptyIcon {
+  color: a.cvar('text-placeholder');
+  margin-bottom: 16px;
+}
+
+.emptyTitle {
+  font-size: 16px;
+  font-weight: 700;
+  color: a.cvar('text-strong');
+  margin: 0 0 8px 0;
+}
+
+.emptyText {
+  font-size: 14px;
+  color: a.cvar('text-muted');
+  margin: 0;
+  max-width: 320px;
+}
