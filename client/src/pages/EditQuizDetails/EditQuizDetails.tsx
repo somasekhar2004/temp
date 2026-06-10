@@ -61,13 +61,13 @@ export const EditQuizDetails: React.FC = () => {
 
   // CSV Question Modal
   const [csvQuestionModalOpen, setCsvQuestionModalOpen] = useState(false);
-  const [csvQuestionText, setCsvQuestionText] = useState('');
   const [csvQuestionError, setCsvQuestionError] = useState('');
+  const [parsedQuestions, setParsedQuestions] = useState<any[]>([]);
 
   // CSV Participant Modal
   const [csvParticipantModalOpen, setCsvParticipantModalOpen] = useState(false);
-  const [csvParticipantText, setCsvParticipantText] = useState('');
   const [csvParticipantError, setCsvParticipantError] = useState('');
+  const [parsedParticipantEmails, setParsedParticipantEmails] = useState<string[]>([]);
 
   // Inline Participant Add
   const [inlineParticipantOpen, setInlineParticipantOpen] = useState(false);
@@ -230,46 +230,148 @@ export const EditQuizDetails: React.FC = () => {
     }
   };
 
-  // CSV parsing helpers
-  const handleQuestionsCsvImport = async () => {
-    setCsvQuestionError('');
-    if (!csvQuestionText) return;
-
-    const lines = csvQuestionText.split('\n').map((l) => l.trim()).filter(Boolean);
-    if (lines.length < 2) {
-      setCsvQuestionError('CSV is empty or missing headers');
+  // CSV file parsing & validation helpers
+  const handleQuestionFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) {
+      setParsedQuestions([]);
       return;
     }
 
-    // Expecting columns: Question,OptionA,OptionB,OptionC,OptionD,Correct
-    const parsedQuestions = [];
-    for (let i = 1; i < lines.length; i++) {
-      const cols = lines[i].split(',').map((c) => c.replace(/^["']|["']$/g, '').trim());
-      if (cols.length < 6) {
-        setCsvQuestionError(`Line ${i + 1} is invalid. Required format: Question,OptionA,OptionB,OptionC,OptionD,Correct`);
+    setCsvQuestionError('');
+    setParsedQuestions([]);
+
+    const reader = new FileReader();
+    reader.onload = (event) => {
+      const text = event.target?.result as string;
+      const lines = text.split('\n').map((l) => l.trim()).filter(Boolean);
+      if (lines.length < 2) {
+        setCsvQuestionError('CSV is empty or missing headers');
         return;
       }
-      
-      const [text, optA, optB, optC, optD, correctStr] = cols;
-      const correctOptionIds = correctStr.split(';').map((s) => s.trim().toUpperCase());
 
-      parsedQuestions.push({
-        text,
-        options: [
-          { id: 'A', text: optA },
-          { id: 'B', text: optB },
-          { id: 'C', text: optC },
-          { id: 'D', text: optD },
-        ],
-        correctOptionIds,
-        type: correctOptionIds.length > 1 ? 'multi-select' : 'single-choice',
-      });
+      // Check header format
+      const headers = lines[0].split(',').map((h) => h.replace(/^["']|["']$/g, '').trim().toLowerCase());
+      const expectedHeaders = ['question', 'optiona', 'optionb', 'optionc', 'optiond', 'correct'];
+      const hasCorrectHeaders = expectedHeaders.every((h) => headers.includes(h));
+      if (!hasCorrectHeaders) {
+        setCsvQuestionError('Invalid CSV header. Expected: Question,OptionA,OptionB,OptionC,OptionD,Correct');
+        return;
+      }
+
+      const questionIndex = headers.indexOf('question');
+      const optAIndex = headers.indexOf('optiona');
+      const optBIndex = headers.indexOf('optionb');
+      const optCIndex = headers.indexOf('optionc');
+      const optDIndex = headers.indexOf('optiond');
+      const correctIndex = headers.indexOf('correct');
+
+      const tempParsedQuestions = [];
+      for (let i = 1; i < lines.length; i++) {
+        const cols = lines[i].split(',').map((c) => c.replace(/^["']|["']$/g, '').trim());
+        if (cols.length < 6) {
+          setCsvQuestionError(`Line ${i + 1} is invalid. Required columns: Question,OptionA,OptionB,OptionC,OptionD,Correct`);
+          setParsedQuestions([]);
+          return;
+        }
+
+        const qTextVal = cols[questionIndex];
+        const optAVal = cols[optAIndex];
+        const optBVal = cols[optBIndex];
+        const optCVal = cols[optCIndex];
+        const optDVal = cols[optDIndex];
+        const correctVal = cols[correctIndex];
+
+        if (!qTextVal || !optAVal || !optBVal || !correctVal) {
+          setCsvQuestionError(`Line ${i + 1} is missing mandatory fields (Question, OptionA, OptionB, or Correct)`);
+          setParsedQuestions([]);
+          return;
+        }
+
+        const correctOptionIds = correctVal.split(';').map((s) => s.trim().toUpperCase());
+        const validOptions = ['A', 'B', 'C', 'D'];
+        const hasInvalidOption = correctOptionIds.some((id) => !validOptions.includes(id));
+        if (hasInvalidOption) {
+          setCsvQuestionError(`Line ${i + 1} has invalid correct options. Correct values must be A, B, C, or D.`);
+          setParsedQuestions([]);
+          return;
+        }
+
+        tempParsedQuestions.push({
+          text: qTextVal,
+          options: [
+            { id: 'A', text: optAVal },
+            { id: 'B', text: optBVal },
+            { id: 'C', text: optCVal },
+            { id: 'D', text: optDVal },
+          ],
+          correctOptionIds,
+          type: correctOptionIds.length > 1 ? 'multi-select' : 'single-choice',
+        });
+      }
+
+      setParsedQuestions(tempParsedQuestions);
+    };
+    reader.readAsText(file);
+  };
+
+  const handleParticipantFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) {
+      setParsedParticipantEmails([]);
+      return;
     }
+
+    setCsvParticipantError('');
+    setParsedParticipantEmails([]);
+
+    const reader = new FileReader();
+    reader.onload = (event) => {
+      const text = event.target?.result as string;
+      const lines = text.split('\n').map((l) => l.trim().toLowerCase()).filter(Boolean);
+      if (lines.length < 2) {
+        setCsvParticipantError('CSV is empty or missing headers');
+        return;
+      }
+
+      const headers = lines[0].split(',').map((h) => h.replace(/^["']|["']$/g, '').trim());
+      const emailIndex = headers.indexOf('email');
+      if (emailIndex === -1) {
+        setCsvParticipantError('Invalid CSV header. Expected column: email');
+        return;
+      }
+
+      const tempEmails: string[] = [];
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      for (let i = 1; i < lines.length; i++) {
+        const cols = lines[i].split(',').map((c) => c.replace(/^["']|["']$/g, '').trim());
+        const email = cols[emailIndex];
+        if (!email) {
+          setCsvParticipantError(`Line ${i + 1} has an empty email address`);
+          setParsedParticipantEmails([]);
+          return;
+        }
+        if (!emailRegex.test(email)) {
+          setCsvParticipantError(`Line ${i + 1} has an invalid email format: ${email}`);
+          setParsedParticipantEmails([]);
+          return;
+        }
+        tempEmails.push(email);
+      }
+
+      setParsedParticipantEmails(tempEmails);
+    };
+    reader.readAsText(file);
+  };
+
+  const handleQuestionsCsvImport = async () => {
+    setCsvQuestionError('');
+    if (parsedQuestions.length === 0) return;
 
     try {
       await addQuestionTrigger({ id: quiz.id, body: parsedQuestions }).unwrap();
       setCsvQuestionModalOpen(false);
-      setCsvQuestionText('');
+      setParsedQuestions([]);
       refetch();
     } catch (err: any) {
       setCsvQuestionError(err?.data?.error?.message || 'Bulk import failed');
@@ -278,30 +380,12 @@ export const EditQuizDetails: React.FC = () => {
 
   const handleParticipantsCsvImport = async () => {
     setCsvParticipantError('');
-    if (!csvParticipantText) return;
-
-    const lines = csvParticipantText.split('\n').map((l) => l.trim().toLowerCase()).filter(Boolean);
-    if (lines.length < 2) {
-      setCsvParticipantError('CSV is empty or missing headers');
-      return;
-    }
-
-    // Expecting column: email
-    const emails: string[] = [];
-    const headerIndex = lines[0].includes('email') ? 0 : -1;
-    
-    for (let i = 1; i < lines.length; i++) {
-      const row = lines[i].split(',').map((c) => c.replace(/^["']|["']$/g, '').trim());
-      const email = row[headerIndex === -1 ? 0 : headerIndex];
-      if (email && email.includes('@')) {
-        emails.push(email);
-      }
-    }
+    if (parsedParticipantEmails.length === 0) return;
 
     try {
-      await addParticipantTrigger({ id: quiz.id, body: { emails } }).unwrap();
+      await addParticipantTrigger({ id: quiz.id, body: { emails: parsedParticipantEmails } }).unwrap();
       setCsvParticipantModalOpen(false);
-      setCsvParticipantText('');
+      setParsedParticipantEmails([]);
       refetch();
     } catch (err: any) {
       setCsvParticipantError(err?.data?.error?.message || 'Bulk import failed');
@@ -377,7 +461,7 @@ export const EditQuizDetails: React.FC = () => {
                 Publish Quiz
               </Button>
             )}
-            {(isDraft || isScheduled) && user?.role !== 'admin' && (
+            {(isDraft || isScheduled) && (
               <Button variant="teal" size="sm" icon="republish" onClick={() => setShowScheduleForm(true)}>
                 Re-schedule
               </Button>
@@ -496,23 +580,25 @@ export const EditQuizDetails: React.FC = () => {
 
 
         {/* Tabs Control */}
-        <div className={styles.tabHeader}>
-          <button
-            onClick={() => setActiveTab('questions')}
-            className={`${styles.tabBtn} ${activeTab === 'questions' ? styles.activeTab : ''}`}
-          >
-            Questions ({questionsCount})
-          </button>
-          <button
-            onClick={() => setActiveTab('participants')}
-            className={`${styles.tabBtn} ${activeTab === 'participants' ? styles.activeTab : ''}`}
-          >
-            Participants ({participantsCount})
-          </button>
-        </div>
+        {user?.role !== 'admin' && (
+          <>
+            <div className={styles.tabHeader}>
+              <button
+                onClick={() => setActiveTab('questions')}
+                className={`${styles.tabBtn} ${activeTab === 'questions' ? styles.activeTab : ''}`}
+              >
+                Questions ({questionsCount})
+              </button>
+              <button
+                onClick={() => setActiveTab('participants')}
+                className={`${styles.tabBtn} ${activeTab === 'participants' ? styles.activeTab : ''}`}
+              >
+                Participants ({participantsCount})
+              </button>
+            </div>
 
-        {/* Tab Content */}
-        {activeTab === 'questions' ? (
+            {/* Tab Content */}
+            {activeTab === 'questions' ? (
           <div className={styles.tabContent}>
             {/* Questions Toolbar */}
             {isDraft && (
@@ -662,7 +748,9 @@ export const EditQuizDetails: React.FC = () => {
             )}
           </div>
         )}
-      </div>
+      </>
+    )}
+  </div>
 
       {/* Reusable Question Add/Edit Manual Modal */}
       <Modal
@@ -765,7 +853,11 @@ export const EditQuizDetails: React.FC = () => {
       {/* CSV Question Upload Modal */}
       <Modal
         isOpen={csvQuestionModalOpen}
-        onClose={() => setCsvQuestionModalOpen(false)}
+        onClose={() => {
+          setCsvQuestionModalOpen(false);
+          setCsvQuestionError('');
+          setParsedQuestions([]);
+        }}
         title="Upload Questions via CSV"
         size="md"
       >
@@ -775,22 +867,45 @@ export const EditQuizDetails: React.FC = () => {
             <code>Question,OptionA,OptionB,OptionC,OptionD,Correct</code>
           </p>
 
-          <Input
-            label="CSV Text Data"
-            textarea
-            rows={10}
-            placeholder="Question,OptionA,OptionB,OptionC,OptionD,Correct&#10;Which hook handles side effects?,useCallback,useEffect,useMemo,useState,B"
-            value={csvQuestionText}
-            onChange={(e) => setCsvQuestionText(e.target.value)}
-          />
+          <div className={styles.fileInputWrapper} style={{ marginBottom: '16px' }}>
+            <label className={styles.fieldLabel} style={{ display: 'block', marginBottom: '8px', fontWeight: 600 }}>Select CSV File</label>
+            <input
+              type="file"
+              accept=".csv"
+              onChange={handleQuestionFileChange}
+              style={{
+                display: 'block',
+                width: '100%',
+                padding: '10px',
+                border: '1px solid #ccc',
+                borderRadius: '4px',
+                backgroundColor: '#fff',
+                fontSize: '14px',
+              }}
+            />
+          </div>
 
-          {csvQuestionError && <span className={styles.errorMessage}>{csvQuestionError}</span>}
+          {csvQuestionError && <span className={styles.errorMessage} style={{ color: '#E24B4A', display: 'block', marginBottom: '16px', fontSize: '14px' }}>{csvQuestionError}</span>}
+          {parsedQuestions.length > 0 && (
+            <span className={styles.successMessage} style={{ color: '#1D9E75', display: 'block', marginBottom: '16px', fontSize: '14px', fontWeight: 600 }}>
+              ✓ Ready to import {parsedQuestions.length} questions.
+            </span>
+          )}
 
           <div className={styles.modalActions}>
-            <Button type="button" variant="ghost" onClick={() => setCsvQuestionModalOpen(false)}>
+            <Button type="button" variant="ghost" onClick={() => {
+              setCsvQuestionModalOpen(false);
+              setCsvQuestionError('');
+              setParsedQuestions([]);
+            }}>
               Cancel
             </Button>
-            <Button type="button" variant="primary" onClick={handleQuestionsCsvImport}>
+            <Button
+              type="button"
+              variant="primary"
+              disabled={parsedQuestions.length === 0 || !!csvQuestionError}
+              onClick={handleQuestionsCsvImport}
+            >
               Import Questions
             </Button>
           </div>
@@ -800,7 +915,11 @@ export const EditQuizDetails: React.FC = () => {
       {/* CSV Participant Upload Modal */}
       <Modal
         isOpen={csvParticipantModalOpen}
-        onClose={() => setCsvParticipantModalOpen(false)}
+        onClose={() => {
+          setCsvParticipantModalOpen(false);
+          setCsvParticipantError('');
+          setParsedParticipantEmails([]);
+        }}
         title="Upload Participants via CSV"
         size="md"
       >
@@ -810,22 +929,45 @@ export const EditQuizDetails: React.FC = () => {
             <code>email&#10;candidate1@company.com&#10;candidate2@company.com</code>
           </p>
 
-          <Input
-            label="CSV Text Data"
-            textarea
-            rows={10}
-            placeholder="email&#10;priya@company.com&#10;mike@company.com"
-            value={csvParticipantText}
-            onChange={(e) => setCsvParticipantText(e.target.value)}
-          />
+          <div className={styles.fileInputWrapper} style={{ marginBottom: '16px' }}>
+            <label className={styles.fieldLabel} style={{ display: 'block', marginBottom: '8px', fontWeight: 600 }}>Select CSV File</label>
+            <input
+              type="file"
+              accept=".csv"
+              onChange={handleParticipantFileChange}
+              style={{
+                display: 'block',
+                width: '100%',
+                padding: '10px',
+                border: '1px solid #ccc',
+                borderRadius: '4px',
+                backgroundColor: '#fff',
+                fontSize: '14px',
+              }}
+            />
+          </div>
 
-          {csvParticipantError && <span className={styles.errorMessage}>{csvParticipantError}</span>}
+          {csvParticipantError && <span className={styles.errorMessage} style={{ color: '#E24B4A', display: 'block', marginBottom: '16px', fontSize: '14px' }}>{csvParticipantError}</span>}
+          {parsedParticipantEmails.length > 0 && (
+            <span className={styles.successMessage} style={{ color: '#1D9E75', display: 'block', marginBottom: '16px', fontSize: '14px', fontWeight: 600 }}>
+              ✓ Ready to import {parsedParticipantEmails.length} participants.
+            </span>
+          )}
 
           <div className={styles.modalActions}>
-            <Button type="button" variant="ghost" onClick={() => setCsvParticipantModalOpen(false)}>
+            <Button type="button" variant="ghost" onClick={() => {
+              setCsvParticipantModalOpen(false);
+              setCsvParticipantError('');
+              setParsedParticipantEmails([]);
+            }}>
               Cancel
             </Button>
-            <Button type="button" variant="primary" onClick={handleParticipantsCsvImport}>
+            <Button
+              type="button"
+              variant="primary"
+              disabled={parsedParticipantEmails.length === 0 || !!csvParticipantError}
+              onClick={handleParticipantsCsvImport}
+            >
               Import Participants
             </Button>
           </div>

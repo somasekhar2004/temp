@@ -114,7 +114,7 @@ router.patch('/quizzes/:id', validate(updateQuizInstructorSchema, 'body'), ctrl.
  *       201:
  *         description: Question(s) added successfully
  */
-router.post('/quizzes/:id/questions', ctrl.addQuestion);
+router.post('/quizzes/:id/questions', requireRole('instructor'), ctrl.addQuestion);
 
 /**
  * @swagger
@@ -156,7 +156,7 @@ router.post('/quizzes/:id/questions', ctrl.addQuestion);
  *       200:
  *         description: Question updated successfully
  */
-router.patch('/quizzes/:id/questions/:qId', validate(questionInputSchema, 'body'), ctrl.editQuestion);
+router.patch('/quizzes/:id/questions/:qId', requireRole('instructor'), validate(questionInputSchema, 'body'), ctrl.editQuestion);
 
 /**
  * @swagger
@@ -179,7 +179,7 @@ router.patch('/quizzes/:id/questions/:qId', validate(questionInputSchema, 'body'
  *       200:
  *         description: Question deleted successfully
  */
-router.delete('/quizzes/:id/questions/:qId', ctrl.deleteQuestion);
+router.delete('/quizzes/:id/questions/:qId', requireRole('instructor'), ctrl.deleteQuestion);
 
 /**
  * @swagger
@@ -209,7 +209,7 @@ router.delete('/quizzes/:id/questions/:qId', ctrl.deleteQuestion);
  *       200:
  *         description: Participant(s) assigned successfully
  */
-router.post('/quizzes/:id/participants', ctrl.addParticipant);
+router.post('/quizzes/:id/participants', requireRole('instructor'), ctrl.addParticipant);
 
 /**
  * @swagger
@@ -232,7 +232,7 @@ router.post('/quizzes/:id/participants', ctrl.addParticipant);
  *       200:
  *         description: Participant removed successfully
  */
-router.delete('/quizzes/:id/participants/:pId', ctrl.removeParticipant);
+router.delete('/quizzes/:id/participants/:pId', requireRole('instructor'), ctrl.removeParticipant);
 
 /**
  * @swagger
@@ -253,7 +253,7 @@ router.delete('/quizzes/:id/participants/:pId', ctrl.removeParticipant);
  *       409:
  *         description: Publish failed due to failed checks (e.g. empty questions/roster)
  */
-router.post('/quizzes/:id/publish', ctrl.publishQuiz);
+router.post('/quizzes/:id/publish', requireRole('instructor'), ctrl.publishQuiz);
 
 /**
  * @swagger
