@@ -1,8 +1,8 @@
-// filename: server/src/modules/admin/admin.routes.ts
+// filename: server/src/modules/admin/routes/admin.routes.ts
 import { Router } from 'express';
-import { validate } from '../../middleware/validate';
-import { requireAuth } from '../../middleware/requireAuth';
-import { requireRole } from '../../middleware/requireRole';
+import { validate } from '../../../middleware/validate';
+import { requireAuth } from '../../../middleware/requireAuth';
+import { requireRole } from '../../../middleware/requireRole';
 import {
   listUsersQuerySchema,
   listQuizzesAdminQuerySchema,
@@ -10,8 +10,8 @@ import {
   updateQuizSchema,
   assignInstructorSchema,
   analyticsQuerySchema,
-} from './admin.schema';
-import * as ctrl from './admin.controller';
+} from '../schemas/admin.schema';
+import * as ctrl from '../controllers/admin.controller';
 
 const router = Router();
 
@@ -58,7 +58,28 @@ router.use(requireAuth, requireRole('admin'));
  */
 router.get('/users', validate(listUsersQuerySchema, 'query'), ctrl.getUsers);
 
-router.post('/users/assign-instructor', validate(assignInstructorSchema, 'body'), ctrl.upgradeUserToInstructor);
+/**
+ * @swagger
+ * /api/admin/assign-instructor:
+ *   post:
+ *     tags: [Admin]
+ *     summary: Upgrade user to instructor globally by email
+ *     security:
+ *       - cookieAuth: []
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required: [email]
+ *             properties:
+ *               email: { type: string, format: email, example: "candidate@example.com" }
+ *     responses:
+ *       200:
+ *         description: User upgraded successfully
+ */
+router.post('/assign-instructor', validate(assignInstructorSchema, 'body'), ctrl.upgradeUserToInstructor);
 
 router.get('/quizzes', validate(listQuizzesAdminQuerySchema, 'query'), ctrl.getQuizzes);
 
@@ -164,34 +185,6 @@ router.post('/quizzes/:id/cancel', ctrl.cancelQuiz);
 
 /**
  * @swagger
- * /api/admin/quizzes/{id}/assign-instructor:
- *   post:
- *     tags: [Admin]
- *     summary: Assign an instructor to a quiz by email
- *     security:
- *       - cookieAuth: []
- *     parameters:
- *       - in: path
- *         name: id
- *         required: true
- *         schema: { type: string }
- *     requestBody:
- *       required: true
- *       content:
- *         application/json:
- *           schema:
- *             type: object
- *             required: [email]
- *             properties:
- *               email: { type: string, format: email, example: "jane@deloitte.com" }
- *     responses:
- *       200:
- *         description: Instructor assigned successfully
- */
-router.post('/quizzes/:id/assign-instructor', validate(assignInstructorSchema, 'body'), ctrl.assignInstructor);
-
-/**
- * @swagger
  * /api/admin/analytics:
  *   get:
  *     tags: [Admin]
@@ -215,3 +208,6 @@ router.post('/quizzes/:id/assign-instructor', validate(assignInstructorSchema, '
 router.get('/analytics', validate(analyticsQuerySchema, 'query'), ctrl.getAnalytics);
 
 export default router;
+
+
+

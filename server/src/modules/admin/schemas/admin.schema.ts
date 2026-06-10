@@ -1,4 +1,4 @@
-// filename: server/src/modules/admin/admin.schema.ts
+// filename: server/src/modules/admin/schemas/admin.schema.ts
 import { z } from 'zod';
 
 export const listUsersQuerySchema = z.object({
@@ -26,7 +26,6 @@ export const createQuizSchema = z.object({
   duration: z.number().min(1, 'Duration must be at least 1 minute'),
   startTime: z.string().datetime({ message: 'Invalid start time format (ISO-8601 required)' }),
   endTime: z.string().datetime({ message: 'Invalid end time format (ISO-8601 required)' }),
-  instructorId: z.string().trim().optional(),
 }).refine((data) => new Date(data.endTime) > new Date(data.startTime), {
   message: 'End time must be strictly after start time',
   path: ['endTime'],

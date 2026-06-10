@@ -69,7 +69,7 @@ export const adminApi = baseApi.injectEndpoints({
     }),
     upgradeUserToInstructor: builder.mutation<{ user: User; message: string }, { email: string }>({
       query: (body) => ({
-        url: '/admin/users/assign-instructor',
+        url: '/admin/assign-instructor',
         method: 'POST',
         body,
       }),
@@ -106,8 +106,8 @@ export const adminApi = baseApi.injectEndpoints({
       invalidatesTags: ['Quizzes', 'QuizDetails'],
     }),
     assignInstructor: builder.mutation<{ quiz: Quiz; message: string }, { id: string; email: string }>({
-      query: ({ id, email }) => ({
-        url: `/admin/quizzes/${id}/assign-instructor`,
+      query: ({ email }) => ({
+        url: '/admin/assign-instructor',
         method: 'POST',
         body: { email },
       }),

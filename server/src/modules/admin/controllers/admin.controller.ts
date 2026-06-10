@@ -1,9 +1,9 @@
-// filename: server/src/modules/admin/admin.controller.ts
+// filename: server/src/modules/admin/controllers/admin.controller.ts
 import type { Request, Response, NextFunction } from 'express';
-import * as adminService from './admin.service';
-import { ApiError } from '../../utils/ApiError';
-import { toPublicUser } from '../../models/User';
-import type { ListUsersQuery, CreateQuizInput, UpdateQuizInput, AssignInstructorInput, AnalyticsQuery } from './admin.schema';
+import * as adminService from '../services/admin.service';
+import { ApiError } from '../../../utils/ApiError';
+import { toPublicUser } from '../../../models/User';
+import type { ListUsersQuery, CreateQuizInput, UpdateQuizInput, AnalyticsQuery } from '../schemas/admin.schema';
 
 export async function getUsers(
   req: Request,
@@ -33,7 +33,7 @@ export async function createQuiz(
     if (!req.user) {
       throw new ApiError(401, 'NOT_AUTHENTICATED', 'Authentication required');
     }
-    const quiz = await adminService.createQuiz(req.body, req.user.id);
+    const quiz = await adminService.createQuiz(req.body);
     res.status(201).json({ quiz });
   } catch (err) {
     next(err);
@@ -79,19 +79,6 @@ export async function cancelQuiz(
   }
 }
 
-export async function assignInstructor(
-  req: Request<{ id: string }, unknown, AssignInstructorInput>,
-  res: Response,
-  next: NextFunction
-): Promise<void> {
-  try {
-    const quiz = await adminService.assignInstructor(req.params.id, req.body.email);
-    res.status(200).json({ quiz, message: 'Instructor assigned successfully' });
-  } catch (err) {
-    next(err);
-  }
-}
-
 export async function getAnalytics(
   req: Request,
   res: Response,
@@ -130,16 +117,18 @@ export async function getQuizzes(
 }
 
 export async function upgradeUserToInstructor(
-  req: Request<unknown, unknown, { email: string }>,
+  req: Request<any, any, { email: string }>,
   res: Response,
   next: NextFunction
 ): Promise<void> {
   try {
     const user = await adminService.upgradeUserToInstructor(req.body.email);
-    res.status(200).json({ user: toPublicUser(user), message: 'User upgraded to instructor successfully' });
+    res.status(200).json({
+      user: toPublicUser(user),
+      quiz: null,
+      message: 'User upgraded to instructor successfully'
+    });
   } catch (err) {
     next(err);
   }
 }
-
-

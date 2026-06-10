@@ -1,4 +1,4 @@
-// filename: server/src/modules/instructor/instructor.schema.ts
+// filename: server/src/modules/instructor/schemas/instructor.schema.ts
 import { z } from 'zod';
 
 export const listQuizzesQuerySchema = z.object({
@@ -6,7 +6,6 @@ export const listQuizzesQuerySchema = z.object({
   limit: z.preprocess((val) => Number(val) || 10, z.number().min(1).max(100)).default(10),
   status: z.enum(['Draft', 'Scheduled', 'Live', 'Completed', 'Cancelled']).optional(),
   search: z.string().trim().optional(),
-  instructorId: z.string().trim().optional(),
 });
 export type ListQuizzesQuery = z.infer<typeof listQuizzesQuerySchema>;
 

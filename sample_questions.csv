@@ -1,0 +1,5 @@
+Question,OptionA,OptionB,OptionC,OptionD,Correct
+"Which React hook is used to perform side effects in functional components?","useCallback","useEffect","useMemo","useState","B"
+"Which CSS styling approach is utility-first?","Tailwind CSS","Bootstrap","Vanilla CSS","Sass","A"
+"What does HTML stand for?","Hyper Text Markup Language","High Tech Modern Language","Hyper Text Modern Link","None of the above","A"
+"Which of the following are React hooks? (Select all that apply)","useState","useEffect","useDatabase","useAction","A;B"

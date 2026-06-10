@@ -1,11 +1,11 @@
-// filename: server/src/modules/instructor/instructor.service.ts
-import { Quiz, type QuizDocument } from '../../models/Quiz';
-import { User } from '../../models/User';
-import { QuizAttempt } from '../../models/QuizAttempt';
-import { ApiError } from '../../utils/ApiError';
-import type { ListQuizzesQuery, QuestionInput, UpdateQuizInstructorInput } from './instructor.schema';
+// filename: server/src/modules/instructor/services/instructor.service.ts
+import { Quiz, type QuizDocument } from '../../../models/Quiz';
+import { User } from '../../../models/User';
+import { QuizAttempt } from '../../../models/QuizAttempt';
+import { ApiError } from '../../../utils/ApiError';
+import type { ListQuizzesQuery, QuestionInput, UpdateQuizInstructorInput } from '../schemas/instructor.schema';
 import { Types, type FilterQuery } from 'mongoose';
-import type { IQuiz } from '../../models/Quiz';
+import type { IQuiz } from '../../../models/Quiz';
 
 // Helper to check quiz ownership and return the document
 async function checkOwnership(quizId: string, instructorId: string): Promise<QuizDocument> {
@@ -26,10 +26,6 @@ export async function listQuizzes(instructorId: string, query: ListQuizzesQuery)
     throw new ApiError(403, 'FORBIDDEN', 'Access denied. You must be an instructor or admin.');
   }
   const filter: FilterQuery<IQuiz> = {};
-
-  if (query.instructorId) {
-    filter.instructor = new Types.ObjectId(query.instructorId);
-  }
 
   if (query.status) {
     filter.status = query.status;

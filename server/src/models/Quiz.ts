@@ -20,7 +20,7 @@ export interface IQuiz {
   startTime: Date;
   endTime: Date;
   status: 'Draft' | 'Scheduled' | 'Live' | 'Completed' | 'Cancelled';
-  instructor: Types.ObjectId;
+  instructor?: Types.ObjectId;
   questions: IQuizQuestion[];
   participants: IQuizParticipant[];
   cancellationTimestamp?: Date;
@@ -64,7 +64,7 @@ const quizSchema = new Schema<IQuiz>(
       default: 'Draft',
       index: true,
     },
-    instructor: { type: Schema.Types.ObjectId, ref: 'User', required: true, index: true },
+    instructor: { type: Schema.Types.ObjectId, ref: 'User', required: false, index: true },
     questions: { type: [questionSchema], default: [] },
     participants: { type: [participantSchema], default: [] },
     cancellationTimestamp: { type: Date },

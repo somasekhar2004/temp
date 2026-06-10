@@ -1,15 +1,14 @@
-// filename: server/src/modules/instructor/instructor.routes.ts
+// filename: server/src/modules/instructor/routes/instructor.routes.ts
 import { Router } from 'express';
-import { validate } from '../../middleware/validate';
-import { requireAuth } from '../../middleware/requireAuth';
-import { requireRole } from '../../middleware/requireRole';
+import { validate } from '../../../middleware/validate';
+import { requireAuth } from '../../../middleware/requireAuth';
+import { requireRole } from '../../../middleware/requireRole';
 import {
   listQuizzesQuerySchema,
   questionInputSchema,
-  addParticipantSchema,
   updateQuizInstructorSchema,
-} from './instructor.schema';
-import * as ctrl from './instructor.controller';
+} from '../schemas/instructor.schema';
+import * as ctrl from '../controllers/instructor.controller';
 
 const router = Router();
 
@@ -18,7 +17,6 @@ router.get('/quizzes/:id/results', requireAuth, requireRole('instructor', 'admin
 
 // Enforce auth and instructor/admin role for all other endpoints in this router
 router.use(requireAuth, requireRole('instructor', 'admin'));
-
 
 /**
  * @swagger
@@ -294,32 +292,5 @@ router.post('/quizzes/:id/cancel', ctrl.cancelQuiz);
  *         description: Quiz deleted successfully
  */
 router.delete('/quizzes/:id', ctrl.deleteQuiz);
-
-/**
- * @swagger
- * /api/instructor/quizzes/{id}/results:
- *   get:
- *     tags: [Instructor]
- *     summary: Get candidate scorecard list and metrics for a completed quiz
- *     security:
- *       - cookieAuth: []
- *     parameters:
- *       - in: path
- *         name: id
- *         required: true
- *         schema: { type: string }
- *       - in: query
- *         name: page
- *         schema: { type: integer, default: 1 }
- *       - in: query
- *         name: limit
- *         schema: { type: integer, default: 10 }
- *       - in: query
- *         name: search
- *         schema: { type: string }
- *     responses:
- *       200:
- *         description: Detailed statistics and attempts list
- */
 
 export default router;

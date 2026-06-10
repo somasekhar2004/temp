@@ -1,4 +1,4 @@
-// filename: server/src/modules/candidate/candidate.schema.ts
+// filename: server/src/modules/candidate/schemas/candidate.schema.ts
 import { z } from 'zod';
 
 export const listCandidateQuizzesQuerySchema = z.object({

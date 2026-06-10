@@ -1,11 +1,11 @@
-// filename: server/src/modules/admin/admin.service.ts
-import { User, type UserDocument } from '../../models/User';
-import { Quiz, type QuizDocument } from '../../models/Quiz';
-import { QuizAttempt } from '../../models/QuizAttempt';
-import { ApiError } from '../../utils/ApiError';
-import type { ListUsersQuery, CreateQuizInput, UpdateQuizInput, AnalyticsQuery } from './admin.schema';
+// filename: server/src/modules/admin/services/admin.service.ts
+import { User, type UserDocument } from '../../../models/User';
+import { Quiz, type QuizDocument } from '../../../models/Quiz';
+import { QuizAttempt } from '../../../models/QuizAttempt';
+import { ApiError } from '../../../utils/ApiError';
+import type { ListUsersQuery, CreateQuizInput, UpdateQuizInput, AnalyticsQuery } from '../schemas/admin.schema';
 import type { FilterQuery } from 'mongoose';
-import type { IUser } from '../../models/User';
+import type { IUser } from '../../../models/User';
 
 export async function listUsers(query: ListUsersQuery) {
   const filter: FilterQuery<IUser> = {};
@@ -62,15 +62,7 @@ export async function listUsers(query: ListUsersQuery) {
   };
 }
 
-export async function createQuiz(input: CreateQuizInput, adminId: string): Promise<QuizDocument> {
-  let targetInstructorId = adminId;
-  if (input.instructorId) {
-    const user = await User.findById(input.instructorId);
-    if (user && user.role === 'instructor') {
-      targetInstructorId = user._id.toString();
-    }
-  }
-
+export async function createQuiz(input: CreateQuizInput): Promise<QuizDocument> {
   const quiz = await Quiz.create({
     title: input.title,
     description: input.description,
@@ -78,7 +70,6 @@ export async function createQuiz(input: CreateQuizInput, adminId: string): Promi
     startTime: new Date(input.startTime),
     endTime: new Date(input.endTime),
     status: 'Draft',
-    instructor: targetInstructorId,
   });
   return quiz;
 }
@@ -135,26 +126,6 @@ export async function cancelQuiz(id: string): Promise<QuizDocument> {
 
   quiz.status = 'Cancelled';
   quiz.cancellationTimestamp = new Date();
-  await quiz.save();
-  return quiz;
-}
-
-export async function assignInstructor(quizId: string, email: string): Promise<QuizDocument> {
-  const quiz = await Quiz.findById(quizId);
-  if (!quiz) {
-    throw new ApiError(404, 'QUIZ_NOT_FOUND', 'Quiz not found');
-  }
-
-  const user = await User.findOne({ email });
-  if (!user) {
-    throw new ApiError(404, 'USER_NOT_FOUND', 'Instructor email not registered');
-  }
-
-  if (user.role !== 'instructor') {
-    throw new ApiError(400, 'ROLE_INVALID', 'Target user is not an instructor');
-  }
-
-  quiz.instructor = user._id;
   await quiz.save();
   return quiz;
 }
@@ -257,5 +228,3 @@ export async function upgradeUserToInstructor(email: string): Promise<UserDocume
   await user.save();
   return user;
 }
-
-

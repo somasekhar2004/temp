@@ -1,10 +1,10 @@
-// filename: server/src/modules/candidate/candidate.routes.ts
+// filename: server/src/modules/candidate/routes/candidate.routes.ts
 import { Router } from 'express';
-import { validate } from '../../middleware/validate';
-import { requireAuth } from '../../middleware/requireAuth';
-import { requireRole } from '../../middleware/requireRole';
-import { listCandidateQuizzesQuerySchema, submitAnswersSchema } from './candidate.schema';
-import * as ctrl from './candidate.controller';
+import { validate } from '../../../middleware/validate';
+import { requireAuth } from '../../../middleware/requireAuth';
+import { requireRole } from '../../../middleware/requireRole';
+import { listCandidateQuizzesQuerySchema, submitAnswersSchema } from '../schemas/candidate.schema';
+import * as ctrl from '../controllers/candidate.controller';
 
 const router = Router();
 

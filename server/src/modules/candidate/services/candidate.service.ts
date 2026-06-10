@@ -1,8 +1,8 @@
-// filename: server/src/modules/candidate/candidate.service.ts
-import { Quiz, type QuizDocument } from '../../models/Quiz';
-import { QuizAttempt, type QuizAttemptDocument, type ICandidateAnswer } from '../../models/QuizAttempt';
-import { ApiError } from '../../utils/ApiError';
-import type { ListCandidateQuizzesQuery } from './candidate.schema';
+// filename: server/src/modules/candidate/services/candidate.service.ts
+import { Quiz, type QuizDocument } from '../../../models/Quiz';
+import { QuizAttempt, type QuizAttemptDocument, type ICandidateAnswer } from '../../../models/QuizAttempt';
+import { ApiError } from '../../../utils/ApiError';
+import type { ListCandidateQuizzesQuery } from '../schemas/candidate.schema';
 import { Types } from 'mongoose';
 
 // Helper to determine real-time status of a quiz
@@ -124,7 +124,7 @@ export async function getQuizDetails(quizId: string, candidateId: string) {
   // Apply live-window check on pre-attempt details
   const now = new Date();
   const rStatus = getRealtimeStatus(quiz, now);
-  
+
   if (rStatus === 'Scheduled' && now < quiz.startTime) {
     // Upcoming: details joinable inside window only.
   }

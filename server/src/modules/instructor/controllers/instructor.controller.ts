@@ -1,8 +1,8 @@
-// filename: server/src/modules/instructor/instructor.controller.ts
+// filename: server/src/modules/instructor/controllers/instructor.controller.ts
 import type { Request, Response, NextFunction } from 'express';
-import * as instructorService from './instructor.service';
-import { ApiError } from '../../utils/ApiError';
-import type { ListQuizzesQuery, QuestionInput, UpdateQuizInstructorInput, AddParticipantInput } from './instructor.schema';
+import * as instructorService from '../services/instructor.service';
+import { ApiError } from '../../../utils/ApiError';
+import type { ListQuizzesQuery, QuestionInput, UpdateQuizInstructorInput } from '../schemas/instructor.schema';
 
 export async function getQuizzes(
   req: Request,

@@ -1,8 +1,8 @@
-// filename: server/src/modules/candidate/candidate.controller.ts
+// filename: server/src/modules/candidate/controllers/candidate.controller.ts
 import type { Request, Response, NextFunction } from 'express';
-import * as candidateService from './candidate.service';
-import { ApiError } from '../../utils/ApiError';
-import type { ListCandidateQuizzesQuery, SubmitAnswersInput } from './candidate.schema';
+import * as candidateService from '../services/candidate.service';
+import { ApiError } from '../../../utils/ApiError';
+import type { ListCandidateQuizzesQuery, SubmitAnswersInput } from '../schemas/candidate.schema';
 
 export async function getQuizzes(
   req: Request,

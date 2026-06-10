@@ -6,10 +6,10 @@ import cookieParser from 'cookie-parser';
 import swaggerUi from 'swagger-ui-express';
 import { swaggerSpec } from './config/swagger';
 import { env } from './config/env';
-import authRoutes from './modules/auth/auth.routes';
-import adminRoutes from './modules/admin/admin.routes';
-import instructorRoutes from './modules/instructor/instructor.routes';
-import candidateRoutes from './modules/candidate/candidate.routes';
+import authRoutes from './modules/auth/routes/auth.routes';
+import adminRoutes from './modules/admin/routes/admin.routes';
+import instructorRoutes from './modules/instructor/routes/instructor.routes';
+import candidateRoutes from './modules/candidate/routes/candidate.routes';
 import { Quiz } from './models/Quiz';
 import { errorHandler } from './middleware/errorHandler';
 
