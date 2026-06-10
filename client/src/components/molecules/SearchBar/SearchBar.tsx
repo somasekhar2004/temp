@@ -1,5 +1,5 @@
 // filename: client/src/components/molecules/SearchBar/SearchBar.tsx
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import styles from './SearchBar.module.scss';
 import Icon from '../../atoms/Icon/Icon';
 
@@ -18,6 +18,11 @@ export const SearchBar: React.FC<SearchBarProps> = ({
 }) => {
   const [localValue, setLocalValue] = useState(value);
 
+  const onChangeRef = useRef(onChange);
+  useEffect(() => {
+    onChangeRef.current = onChange;
+  }, [onChange]);
+
   // Sync local value when parent value changes
   useEffect(() => {
     setLocalValue(value);
@@ -25,14 +30,18 @@ export const SearchBar: React.FC<SearchBarProps> = ({
 
   // Debounce effect
   useEffect(() => {
+    if (localValue === value) {
+      return;
+    }
+
     const handler = setTimeout(() => {
-      onChange(localValue);
+      onChangeRef.current(localValue);
     }, debounceMs);
 
     return () => {
       clearTimeout(handler);
     };
-  }, [localValue, onChange, debounceMs]);
+  }, [localValue, value, debounceMs]);
 
   return (
     <div className={styles.searchBar}>
